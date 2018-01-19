@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>filesearch</title>
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<link type="text/css" rel="stylesheet" href="css/simplePagination.css"/>
+	<link type="text/css" rel="stylesheet" href="css/semantic.min.css"/>
+	<script type="text/javascript">
+		var elasticsearchUrl = "http://localhost:9200/filesearch/file/_search";
+	</script>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery.simplePagination.js"></script>
+	<script type="text/javascript" src="js/main.js" charset="utf-8"></script>
+</head>
+<body>
+	<div class="pusher">
+		<div class="ui vertical left aligned segment">
+			<div class="ui search container">
+				<p>検索したいファイル名を入力してください（例：Windows）</p>
+				<div class="ui icon input">
+					<input class="prompt" type="text" id="message" placeholder="find fileName...">
+					<button class="ui blue button" id="request">Search </button>
+				</div>
+			</div>
+		</div>
+		<div class="ui vertical center aligned segment">
+			<div class="ui container">
+				<table class="ui fixed celled striped table">
+					<thead>
+						<tr>
+							<th class="ten wide">
+								親ディレクトリ名
+							</th>
+							<th class="tree wide">
+								ファイル名
+							</th>
+							<th class="one wide">
+								拡張子
+							</th>
+							<th class="two wide">
+								更新日付
+							</th>
+							<th class="one wide">
+								サイズ
+							</th>
+						</tr>
+					</thead>
+					<tbody id="result"></tbody>
+					<tfoot>
+						<tr>
+							<th colspan="5">
+								<div class="ui right floated pagination menu">
+								</div>
+							</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

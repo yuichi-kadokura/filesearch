@@ -1,0 +1,54 @@
+{
+  "settings" : {
+    "index":{
+      "analysis":{
+        "tokenizer" : {
+          "kuromoji" : {
+            "type" : "kuromoji_tokenizer"
+          }
+        },
+        "analyzer" : {
+          "kuromoji_analyzer" : {
+            "type" : "custom",
+            "tokenizer" : "kuromoji"
+          }
+        }
+      }
+    }
+  },
+  "mappings" : {
+    "file" : {
+      "properties" : {
+        "target_type" : {
+          "type" : "string"
+        },
+        "file_type" : {
+          "type" : "string"
+        },
+        "dir_name" : {
+          "type" : "string"
+        },
+        "file_name" : {
+          "type" : "string",
+          "analyzer": "kuromoji_analyzer",
+          "boost" : "0.1"
+        },
+        "file_ext" : {
+          "type" : "string"
+        },
+        "last_modified" : {
+          "type" : "date",
+          "format" : "YYYY-MM-dd HH:mm:ss"
+        },
+        "file_size" : {
+          "type" : "integer"
+        },
+        "contents" : {
+          "type" : "string",
+          "analyzer": "kuromoji_analyzer",
+          "boost" : "0.1"
+        }
+      }
+    }
+  }
+}
