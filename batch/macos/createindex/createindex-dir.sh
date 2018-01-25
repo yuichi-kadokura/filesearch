@@ -33,19 +33,19 @@ function checkParam() {
 
 # ファイル拡張子取得
 function getFileExt() {
-  if [ -d $1 ] ; then
+  if [ -d "$1" ] ; then
     return
   fi
-  if [[ ! $1 =~ "." ]] ; then
+  if [[ ! "$1" =~ "." ]] ; then
     return
   fi
-  file_name=`basename $1`
+  file_name=`basename "$1"`
   echo "${file_name##*.}"
 }
 
 # ファイル区分取得
 function getFileType() {
-  if [ -d $1 ] ; then
+  if [ -d "$1" ] ; then
     echo "0"
   else
     echo "1"
@@ -54,7 +54,7 @@ function getFileType() {
 
 # ファイルサイズ
 function getFileSize() {
-  if [ -d $1 ] ; then
+  if [ -d "$1" ] ; then
     echo ""
   else
     stat -f "%z" "$1"
@@ -72,12 +72,12 @@ function getPath() {
 
 # JSON作成
 function outputJson() {
-    file_type=`getFileType $1`
-    file_size=`getFileSize $1`
-    last_modified=`stat -f "%m" "$1" | date "+%Y-%m-%d %H:%M:%S"`
-    dir_name=`dirname $1`
-    file_name=`basename $1`
-    file_ext=`getFileExt $1`
+    file_type=`getFileType "$1"`
+    file_size=`getFileSize "$1"`
+    last_modified=`date -r "$1" "+%Y-%m-%d %H:%M:%S"`
+    dir_name=`dirname "$1"`
+    file_name=`basename "$1"`
+    file_ext=`getFileExt "$1"`
     echo '{"index":{}}'
     echo '{"file_name":"'${file_name}'","target_type":"1","file_size":"'${file_size}'","dir_name":"'${dir_name}'","file_type":"'${file_type}'","last_modified":"'${last_modified}'","file_ext":"'${file_ext}'"}'
 }
@@ -98,7 +98,7 @@ function createIndex() {
       fileCnt=`expr $fileCnt + 1`
       outputFile=`printf "${outputPath}${PREFIX}%06d.json" $fileCnt`
     fi
-    json=`outputJson $FILE`
+    json=`outputJson "${FILE}"`
     echo "${json}" >> $outputFile
   done
   echo "create ${outputFile}"
@@ -120,4 +120,3 @@ done
 checkParam
 # インデックス作成
 createIndex
-
