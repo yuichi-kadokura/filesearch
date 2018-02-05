@@ -89,7 +89,8 @@ function createIndex() {
   fileCnt=`ls -1 ${outputFiles} 2>/dev/null | wc -l`
   outputFile=`printf "${outputPath}${PREFIX}%06d.json" $fileCnt`
   lineCnt=0
-  find $paramTargetPath | while read FILE
+  # .と~で始まるファイルは除外
+  find $paramTargetPath -not -name ".*" -not -name "~*" | while read FILE
   do
     lineCnt=`expr $lineCnt + 1`
     if [ $lineCnt -gt $MAX_LINES ] ; then
