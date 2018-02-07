@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 定数
 BULK_URL="_bulk"
