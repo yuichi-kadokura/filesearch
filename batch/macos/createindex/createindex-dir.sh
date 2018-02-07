@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # 定数
 MAX_LINES=5000
@@ -90,7 +90,7 @@ function createIndex() {
   outputFile=`printf "${outputPath}${PREFIX}%06d.json" $fileCnt`
   lineCnt=0
   # .と~で始まるファイルは除外
-  find $paramTargetPath -not -name ".*" -not -name "~*" | while read FILE
+  while read FILE
   do
     lineCnt=`expr $lineCnt + 1`
     if [ $lineCnt -gt $MAX_LINES ] ; then
@@ -101,7 +101,7 @@ function createIndex() {
     fi
     json=`outputJson "${FILE}"`
     echo "${json}" >> $outputFile
-  done
+  done < <(find $paramTargetPath -not -name ".*" -not -name "~*")
   echo "create ${outputFile}"
 }
 
