@@ -95,6 +95,13 @@ http.cors.allow-origin: "*"
 http.cors.enabled: true
 ```
 
+localhostではアクセスできるがIPアドレス指定でアクセスできない場合、Elasticsearch の config/elasticsearch.yml に以下の設定を追記する。
+
+```
+network.bind_host: <IPアドレス>
+```
+
+
 ### バッチの実行方法
 
 ps1 ファイルを実行可能にするため以下を実行する。

@@ -41,7 +41,7 @@
           "format" : "YYYY-MM-dd HH:mm:ss"
         },
         "file_size" : {
-          "type" : "integer"
+          "type" : "long"
         },
         "contents" : {
           "type" : "string",
