@@ -14,6 +14,7 @@ function doSearch(page) {
 						default_operator: "and"
 					}
 				},
+				sort:[{"last_modified" : {"order" : "desc", "missing" : "_last"}}],
 				from: (page - 1) * 10,
 				size: 10
 				
