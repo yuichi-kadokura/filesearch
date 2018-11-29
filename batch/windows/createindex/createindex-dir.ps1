@@ -3,7 +3,9 @@
 
 Param(
 	[string] $paramTargetPath,
-	[string] $paramOutputPath
+	[string] $paramOutputPath,
+	[string] $paramReplaceOrg,
+	[string] $paramReplaceDest
 )
 
 # ’è”
@@ -13,7 +15,7 @@ $PREFIX = "index"
 # ˆø”ƒ`ƒFƒbƒN
 function checkParam() {
 	if ([string]::IsNullOrEmpty($paramTargetPath) -Or [string]::IsNullOrEmpty($paramOutputPath)) {
-		Write-Error "g‚¢•û : createindex-dir.ps1 ‘ÎÛƒfƒBƒŒƒNƒgƒŠ o—ÍƒfƒBƒŒƒNƒgƒŠ"
+		Write-Error "g‚¢•û : createindex-dir.ps1 ‘ÎÛƒfƒBƒŒƒNƒgƒŠ o—ÍƒfƒBƒŒƒNƒgƒŠ [’uŠ·Œ³•¶š—ñ] [’uŠ·æ•¶š—ñ]"
 		Exit -1
 	}
 	if (!(Test-Path $paramTargetPath)) {
@@ -26,10 +28,13 @@ function checkParam() {
 	}
 }
 
-
 # ƒfƒBƒŒƒNƒgƒŠ–¼æ“¾
 function getDirName([string] $path) {
-	return $path.Substring(0, $path.LastIndexOf("\"))
+	$dirName = $path.Substring(0, $path.LastIndexOf("\"))
+	if ([string]::IsNullOrEmpty($paramReplaceOrg)) {
+		return $dirName
+	}
+	return $dirName.Replace($paramReplaceOrg, $paramReplaceDest)
 }
 
 # ƒtƒ@ƒCƒ‹Šg’£qæ“¾
@@ -55,7 +60,7 @@ function formatDate([DateTime] $datetime) {
 	return $datetime.ToString("yyyy-MM-dd HH:mm:ss")
 }
 
-# ƒtƒ@ƒCƒ‹ƒTƒCƒY
+# ƒtƒ@ƒCƒ‹ƒTƒCƒYæ“¾
 function getFileSize([string] $file_size) {
 	if ($file_size -eq "") {
 		return ""
@@ -97,7 +102,7 @@ function createIndex() {
 	$outputFiles = $outputPath + $PREFIX + "*.json"
 	$fileCnt = (Get-ChildItem $outputFiles).Count
 	$lineCnt = 0
-	# .ï¿½ï¿½~ï¿½Ånï¿½Ü‚ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Íï¿½ï¿½O
+	# .‚Æ~‚Ån‚Ü‚éƒtƒ@ƒCƒ‹‚ÍœŠO
 	Get-ChildItem $paramTargetPath -Recurse -Exclude @(".*", "~*") | %{
 		$lineCnt++
 		if ($lineCnt -gt $MAX_LINES) {
