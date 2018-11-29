@@ -97,7 +97,8 @@ function createIndex() {
 	$outputFiles = $outputPath + $PREFIX + "*.json"
 	$fileCnt = (Get-ChildItem $outputFiles).Count
 	$lineCnt = 0
-	Get-ChildItem $paramTargetPath -Recurse | %{
+	# .��~�Ŏn�܂�t�@�C���͏��O
+	Get-ChildItem $paramTargetPath -Recurse -Exclude @(".*", "~*") | %{
 		$lineCnt++
 		if ($lineCnt -gt $MAX_LINES) {
 			Write-Output "create $outputFile"
