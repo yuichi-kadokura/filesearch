@@ -43,9 +43,10 @@
 
 ##### 検索サーバー
 
-* Elasticsearchを動作させるサーバー（Linux, MacOSX, Windows etc.）
-* Elasticsearch（バージョン0.9以上）
+* OS（Linux, macOS, Windows etc.）
+* Elasticsearch（バージョン0.9～5.x）→AWS Elasticsearch Service でも良い。
 * JVM（Elasticsearchに必要。バージョンはElasticsearchに依存）
+* HTTP Server（Apache, Python SimpleHTTPServer etc.）→Webで公開する場合。htmlファイルを配布するなら不要。
 
 | Elasticsearch | JVM |
 |-|-|
@@ -54,14 +55,14 @@
 |2.x|7 以上|
 |5.x|8 以上|
 
-* Elasticsearch Kuromoji プラグイン（日本語ファイル名に対応させるため）
+6.x以上は非対応。
 
-検索サーバーは AWS Elasticsearch Service でも良い。
+* Elasticsearch Kuromoji プラグイン（日本語ファイル名に対応させるため）
 
 ##### インデックス作成・インポート処理
 
-* Windows 7 SP1 以降
-* Power Shell 3.0 以降
+* Windows 7 SP1 以降＋Power Shell 3.0 以降
+* または macOS
 
 ##### クライアント
 
@@ -95,17 +96,17 @@ http.cors.allow-origin: "*"
 http.cors.enabled: true
 ```
 
-localhostではアクセスできるがIPアドレス指定でアクセスできない場合、Elasticsearch の config/elasticsearch.yml に以下の設定を追記する。
+localhostではアクセスできるがIPアドレスやコンピュータ名を指定してアクセスできない場合、Elasticsearch の config/elasticsearch.yml に以下の設定を追記する。
 
 ```
-network.bind_host: <IPアドレス>
+network.bind_host: <IPアドレス>or<コンピュータ名>
 ```
 
 
 ### バッチの実行方法
 
 ps1 ファイルを実行可能にするため以下を実行する。
-（デフォルトで ps1 ファイルが実行不可となっている）
+（Windows7, 8ではデフォルトで ps1 ファイルが実行不可となっている。Windows10では不要）
 
 ```
 コマンドプロンプトを管理者で実行する。
