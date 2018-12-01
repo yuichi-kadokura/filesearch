@@ -7,10 +7,13 @@ PREFIX="index"
 # 引数
 paramTargetPath=""
 paramOutputPath=""
+paramReplaceOrg=""
+paramReplaceDest=""
+paramNkfEnabled="0"
 
 # 使い方
 function usageExit() {
-  echo "Usage: createindex-dir.sh -t targetDirectory -o outputDirectory"
+  echo "Usage: createindex-dir.sh -t targetDirectory -o outputDirectory -r replaceOrg -d replaceDest -n nkfEnabled"
   exit 1
 }
 
@@ -52,7 +55,7 @@ function getFileType() {
   fi
 }
 
-# ファイルサイズ
+# ファイルサイズ取得
 function getFileSize() {
   if [ -d "$1" ] ; then
     echo ""
@@ -76,6 +79,7 @@ function outputJson() {
     file_size=`getFileSize "$1"`
     last_modified=`date -r "$1" "+%Y-%m-%d %H:%M:%S"`
     dir_name=`dirname "$1"`
+    dir_name=${dir_name/${paramReplaceOrg}/${paramReplaceDest}}
     file_name=`basename "$1"`
     file_ext=`getFileExt "$1"`
     echo '{"index":{}}'
@@ -102,6 +106,10 @@ function createIndex() {
     json=`outputJson "${FILE}"`
     echo "${json}" >> $outputFile
   done < <(find $paramTargetPath -not -name ".*" -not -name "~*")
+  # 濁点や半濁点の全角カナが文字化けするので対応（要nkfインストール）
+  if [ "${paramNkfEnabled}" = "1" ] ; then
+    nkf -w --ic=UTF8-MAC --overwrite ${outputFile}
+  fi
   echo "create ${outputFile}"
 }
 
@@ -109,11 +117,14 @@ function createIndex() {
 # メイン処理
 #--------------------
 # 引数解析
-while getopts t:o: OPT
+while getopts t:o:r:d:n: OPT
 do
   case $OPT in
     t) paramTargetPath=$OPTARG;;
     o) paramOutputPath=$OPTARG;;
+    r) paramReplaceOrg=$OPTARG;;
+    d) paramReplaceDest=$OPTARG;;
+    n) paramNkfEnabled=$OPTARG;;
     \?) usageExit;;
   esac
 done
