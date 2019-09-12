@@ -52,9 +52,14 @@ function deleteSchema() {
 # スキーマ作成
 function createSchema() {
 	if ($paramSchemaCreateFlg -eq "1") {
-		$schemaFile = $PSScriptRoot + "\..\..\..\schema\" + "schema.json"
-		Write-Progress -Activity "Create Elasticsearch Schema : schema.json"
-		Invoke-RestMethod -Uri $paramElasticsearchUrl -Method POST -DisableKeepAlive -InFile $schemaFile | Out-Null
+		$settingFile = $PSScriptRoot + "\..\..\..\schema\setting_kuromoji.json"
+		$mappingFile = $PSScriptRoot + "\..\..\..\schema\mapping_filesearch.json"
+		$settingUrl = $paramElasticsearchUrl + "?pretty"
+		$mappingUrl = $paramElasticsearchUrl + "/_mapping/type?pretty"
+		Write-Progress -Activity "Create Elasticsearch Index : setting_kuromoji.json"
+		Invoke-RestMethod -Headers @{"Content-Type" = "application/json"} -Uri $settingUrl -Method PUT -DisableKeepAlive -InFile $settingFile | Out-Null
+		Write-Progress -Activity "Create Elasticsearch Document : mapping_filesearch.json"
+		Invoke-RestMethod -Headers @{"Content-Type" = "application/json"} -Uri $mappingUrl -Method PUT -DisableKeepAlive -InFile $mappingFile | Out-Null
 	}
 }
 
@@ -81,7 +86,7 @@ function bulkInsert() {
 		$currentFileCount++
 		outputProgress $_.Fullname $allFileCount $currentFileCount
 		Write-Output "import $_"
-		Invoke-RestMethod -Uri $bulkUrl -Method POST -TimeOutSec 30000 -DisableKeepAlive -InFile $_.Fullname | Out-Null
+		Invoke-RestMethod -Headers @{"Content-Type" = "application/json"} -Uri $bulkUrl -Method POST -TimeOutSec 30000 -DisableKeepAlive -InFile $_.Fullname | Out-Null
 	}
 }
 

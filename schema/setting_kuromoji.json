@@ -1,0 +1,17 @@
+{
+  "settings" : {
+    "analysis":{
+      "tokenizer" : {
+        "kuromoji" : {
+          "type" : "kuromoji_tokenizer"
+        }
+      },
+      "analyzer" : {
+        "kuromoji_analyzer" : {
+          "type" : "custom",
+          "tokenizer" : "kuromoji"
+        }
+      }
+    }
+  }
+}

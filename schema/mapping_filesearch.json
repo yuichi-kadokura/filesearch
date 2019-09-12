@@ -1,0 +1,33 @@
+{
+  "properties" : {
+    "target_type" : {
+      "type" : "text"
+    },
+    "file_type" : {
+      "type" : "text"
+    },
+    "dir_name" : {
+      "type" : "text"
+    },
+    "file_name" : {
+      "type" : "text",
+      "analyzer": "kuromoji_analyzer",
+      "boost" : "0.1"
+    },
+    "file_ext" : {
+      "type" : "text"
+    },
+    "last_modified" : {
+      "type" : "date",
+      "format" : "YYYY-MM-dd HH:mm:ss"
+    },
+    "file_size" : {
+      "type" : "long"
+    },
+    "contents" : {
+      "type" : "text",
+      "analyzer": "kuromoji_analyzer",
+      "boost" : "0.1"
+    }
+  }
+}
