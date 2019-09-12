@@ -77,6 +77,65 @@
 * Elasticsearch
 [https://www.elastic.co/jp/downloads/elasticsearch](https://www.elastic.co/jp/downloads/elasticsearch) からダウンロードして任意のディレクトリに解凍する。
 
+### ローカルPC上で動作させる場合に必要なソフトウェアのインストール方法
+
+* Docker
+[https://www.docker.com/get-started](https://www.docker.com/get-started) からダウンロードしてインストールする。
+
+* Elasticsearch
+
+```
+docker pull docker.elastic.co/elasticsearch/elasticsearch:5.6.14
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:5.6.14
+->basic認証がかかる
+```
+
+docker-compose.ymlを作成する。
+```
+version: "3.3"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.14
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.graph.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.monitoring.enabled=false
+      - xpack.security.enabled=false
+      - xpack.watcher.enabled=false
+    ports:
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+
+volumes:
+  es-data:
+    driver: local
+
+```
+``docker-compose run -d``または``docker-compose up -d``
+
+
+### ローカルPCにWebサーバーを立てて他のPCからアクセスしたい場合
+
+* HTTPD
+以下のコマンドでインストールして実行する。
+```
+docker pull httpd
+docker docker run -d -p 8080:80 -v "<インストールディレクトリ>/filesearch/front/:/usr/local/apache2/htdocs/" httpd
+```
+
+* 接続テスト
+http://localhost:8080/
+
+* 備考
+ローカルPCからのみアクセスする場合はHTTPDは不要。index.htmlを直接ブラウザで開く。
+
 ## 展開
 
 ### クライアントのデプロイ方法
