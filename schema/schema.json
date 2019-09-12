@@ -20,31 +20,31 @@
     "file" : {
       "properties" : {
         "target_type" : {
-          "type" : "string"
+          "type" : "text"
         },
         "file_type" : {
-          "type" : "string"
+          "type" : "text"
         },
         "dir_name" : {
-          "type" : "string"
+          "type" : "text"
         },
         "file_name" : {
-          "type" : "string",
+          "type" : "text",
           "analyzer": "kuromoji_analyzer",
           "boost" : "0.1"
         },
         "file_ext" : {
-          "type" : "string"
+          "type" : "text"
         },
         "last_modified" : {
           "type" : "date",
-          "format" : "YYYY-MM-dd HH:mm:ss"
+          "format" : "YYYY-MM-dd HH:mm:ss",
         },
         "file_size" : {
           "type" : "long"
         },
         "contents" : {
-          "type" : "string",
+          "type" : "text",
           "analyzer": "kuromoji_analyzer",
           "boost" : "0.1"
         }
