@@ -55,8 +55,6 @@
 |2.x|7 以上|
 |5.x|8 以上|
 
-6.x以上は非対応。
-
 * Elasticsearch Kuromoji プラグイン（日本語ファイル名に対応させるため）
 
 ##### インデックス作成・インポート処理
@@ -104,6 +102,8 @@ services:
       - xpack.monitoring.enabled=false
       - xpack.security.enabled=false
       - xpack.watcher.enabled=false
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
     ports:
       - "9200:9200"
     ulimits:
@@ -120,6 +120,17 @@ volumes:
 ```
 ``docker-compose run -d``または``docker-compose up -d``
 
+kuromojiをインストールする。  
+Dockerfileを以下の内容で作成する。
+```
+FROM docker.elastic.co/elasticsearch/elasticsearch:5.6.14
+RUN bin/elasticsearch-plugin install analysis-kuromoji
+```
+ビルドして実行する。
+```
+docker build -t es:latest ./
+docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" es:latest
+```
 
 ### ローカルPCにWebサーバーを立てて他のPCからアクセスしたい場合
 
