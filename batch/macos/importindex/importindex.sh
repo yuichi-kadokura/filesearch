@@ -59,16 +59,21 @@ function getSuffixSlashUrl() {
 function deleteSchema() {
   if [ $paramSchemaDeleteFlg = "1" ]; then
     echo "Delete Elasticsearch Schema : ${paramElasticsearchUrl}"
-    curl -XDELETE -o /dev/null -s ${paramElasticsearchUrl}
+    curl -X DELETE -o /dev/null -s ${paramElasticsearchUrl}
   fi
 }
 
 # スキーマ作成
 function createSchema() {
   if [ $paramSchemaCreateFlg = "1" ]; then
-    schemaFile="${SCRIPT_ROOT}/../../../schema/schema.json"
-    echo "Create Elasticsearch Schema : schema.json"
-    curl -XPOST -o /dev/null -s ${paramElasticsearchUrl} --data-binary @${schemaFile}
+    settingFile="${SCRIPT_ROOT}/../../../schema/setting_kuromoji.json"
+    mappingFile="${SCRIPT_ROOT}/../../../schema/mapping_filesearch.json"
+    settingUrl="${paramElasticsearchUrl}?pretty"
+    mappingUrl="${paramElasticsearchUrl}/_mapping/type?pretty"
+    echo "Create Elasticsearch Index : setting_kuromoji.json"
+    curl -H "Content-Type: application/json" -X PUT -o /dev/null -s ${settingUrl} --data-binary @${settingFile}
+    echo "Create Elasticsearch Document : mapping_filesearch.json"
+    curl -H "Content-Type: application/json" -X PUT -o /dev/null -s ${mappingUrl} --data-binary @${mappingFile}
   fi
 }
 
@@ -80,7 +85,7 @@ function bulkInsert() {
   # ファイルのみ対象（サブディレクトリは含まない）
   for FILE in `find ${paramImportFileDir} -maxdepth 1 -type f`; do
     echo "import ${FILE}"
-    curl -XPOST -o /dev/null -s ${bulkUrl} --data-binary @${FILE}
+    curl -H "Content-Type: application/json" -X POST -o /dev/null -s ${bulkUrl} --data-binary @${FILE}
   done
 }
 
