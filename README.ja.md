@@ -85,7 +85,7 @@
 ```
 docker pull docker.elastic.co/elasticsearch/elasticsearch:5.6.14
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:5.6.14
-->basic認証がかかる
+->basic認証がかかるため、docker-compose.yml方式を推奨。
 ```
 
 docker-compose.ymlを作成する。
@@ -138,11 +138,16 @@ docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.s
 以下のコマンドでインストールして実行する。
 ```
 docker pull httpd
-docker docker run -d -p 8080:80 -v "<インストールディレクトリ>/filesearch/front/:/usr/local/apache2/htdocs/" httpd
+docker run -d -p 8080:80 -v "<インストールディレクトリ>/filesearch/front/:/usr/local/apache2/htdocs/" httpd
+# Windowsの場合はドライブ名の前に//を入れる
+docker run -d -p 8080:80 -v "//C/Temp/filesearch/front/:/usr/local/apache2/htdocs/" httpd
 ```
 
 * 接続テスト
 http://localhost:8080/
+
+* Docker Toolboxの場合
+http://192.168.99.100:80080/
 
 * 備考
 ローカルPCからのみアクセスする場合はHTTPDは不要。index.htmlを直接ブラウザで開く。
