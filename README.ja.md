@@ -147,7 +147,7 @@ docker run -d -p 8080:80 -v "//C/Temp/filesearch/front/:/usr/local/apache2/htdoc
 http://localhost:8080/
 
 * Docker Toolboxの場合
-http://192.168.99.100:80080/
+http://192.168.99.100:8080/
 
 * 備考
 ローカルPCからのみアクセスする場合はHTTPDは不要。index.htmlを直接ブラウザで開く。
